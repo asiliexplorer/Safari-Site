@@ -1,0 +1,30 @@
+{
+  "name": "frontend",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --turbopack",
+    "build": "next build --turbopack",
+    "start": "next start",
+    "db:setup": "node scripts/seed.js"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.88.0",
+    "bcrypt": "^6.0.0",
+    "dotenv": "^17.2.3",
+    "lucide-react": "^0.555.0",
+    "next": "^16.0.7",
+    "next-auth": "^4.24.13",
+    "pg": "^8.16.3",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "react-hot-toast": "^2.6.0",
+    "react-icons": "^5.5.0",
+    "uuid": "^13.0.0"
+  },
+  "devDependencies": {
+    "@dotenvx/dotenvx": "^1.51.1",
+    "@tailwindcss/postcss": "^4",
+    "tailwindcss": "^4"
+  }
+}
