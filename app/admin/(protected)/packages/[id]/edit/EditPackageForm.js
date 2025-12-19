@@ -302,35 +302,37 @@ export default function EditPackageForm({ packageData }) {
   const handleImageUpload = async (event, type = 'main') => {
     const file = event.target.files[0];
     if (!file) return;
-    
     if (!file.type.startsWith('image/')) {
       setError('Please select a valid image file');
       return;
     }
-    
     if (file.size > 5 * 1024 * 1024) {
       setError('Image size should be less than 5MB');
       return;
     }
-
     setUploading(true);
     setError('');
-    
     try {
-      // Simulate upload - replace with your actual upload logic
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      const mockUrl = URL.createObjectURL(file);
-
-      if (type === 'main') {
-        setFormData(prev => ({ ...prev, image: mockUrl }));
-      } else {
-        setFormData(prev => ({ ...prev, gallery: [...prev.gallery, mockUrl] }));
+      const formDataUpload = new FormData();
+      formDataUpload.append('file', file);
+      formDataUpload.append('type', type);
+      const response = await fetch('/admin/packages/api/upload', {
+        method: 'POST',
+        body: formDataUpload,
+      });
+      const data = await response.json();
+      if (!response.ok || !data.url) {
+        throw new Error(data.error || 'Upload failed');
       }
-      
+      if (type === 'main') {
+        setFormData(prev => ({ ...prev, image: data.url }));
+      } else {
+        setFormData(prev => ({ ...prev, gallery: [...prev.gallery, data.url] }));
+      }
       setSuccess('Image uploaded successfully!');
       setTimeout(() => setSuccess(''), 3000);
     } catch (err) {
-      setError('Failed to upload image');
+      setError('Failed to upload image: ' + err.message);
     } finally {
       setUploading(false);
       event.target.value = '';
