@@ -136,9 +136,9 @@ const parsePolicies = (policies) => {
   };
 };
 
-export async function PUT(request, { params }) {
+export async function PUT(request, context) {
   try {
-    const { id } = await params;
+    const { id } = await context.params;
     const data = await request.json();
 
     console.log('Updating package ID:', id);
@@ -242,9 +242,9 @@ export async function PUT(request, { params }) {
 }
 
 // GET endpoint
-export async function GET(request, { params }) {
+export async function GET(request, context) {
   try {
-    const { id } = await params;
+    const { id } = await context.params;
     const { data: packageData, error } = await supabase
       .from('packages')
       .select('*')

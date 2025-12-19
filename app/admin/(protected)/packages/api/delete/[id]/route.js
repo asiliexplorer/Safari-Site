@@ -2,10 +2,13 @@
 import { NextResponse } from 'next/server';
 import supabase from '@/lib/db';
 
-export async function DELETE(request, { params }) {
+export async function DELETE(request, context) {
   try {
-    // ✅ Await params before destructuring
-    const { id } = await params;
+    const { id } = await context.params;
+    console.log('DELETE package id:', id);
+    if (!id) {
+      return NextResponse.json({ error: 'No id provided in params' }, { status: 400 });
+    }
 
     // Delete from database
     const { error } = await supabase

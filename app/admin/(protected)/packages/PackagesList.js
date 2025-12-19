@@ -5,6 +5,23 @@ import { useState } from 'react';
 
 export default function PackagesList({ packages: initialPackages }) {
   const [packages, setPackages] = useState(initialPackages);
+  const [refreshing, setRefreshing] = useState(false);
+
+  // Refetch packages from backend
+  const refetchPackages = async () => {
+    setRefreshing(true);
+    try {
+      const response = await fetch('/admin/packages/api/list');
+      if (response.ok) {
+        const { packages: newPackages } = await response.json();
+        setPackages(newPackages);
+      }
+    } catch (err) {
+      // Optionally handle error
+    } finally {
+      setRefreshing(false);
+    }
+  };
   const [loadingStates, setLoadingStates] = useState({});
   const [filter, setFilter] = useState('all');
 
@@ -64,13 +81,12 @@ export default function PackagesList({ packages: initialPackages }) {
     updateLoadingState(pkg.id, true);
     
     try {
-      const response = await fetch(`/admin/packages/api/${pkg.id}`, {
+      const response = await fetch(`/admin/packages/api/delete/${pkg.id}`, {
         method: 'DELETE',
       });
 
       if (response.ok) {
-        // Remove the package from the local state
-        setPackages(prev => prev.filter(p => p.id !== pkg.id));
+        await refetchPackages();
       } else {
         const error = await response.json();
         alert(`Delete failed: ${error.error || 'Unknown error'}`);

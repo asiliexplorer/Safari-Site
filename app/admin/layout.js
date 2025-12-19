@@ -16,11 +16,6 @@ export const metadata = {
 
 export default function AdminLayout({ children }) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={`${roboto.variable} antialiased`} suppressHydrationWarning>
-        {/* No HeaderFooterWrapper - completely clean admin interface */}
-        {children}
-      </body>
-    </html>
+    <>{children}</>
   );
 }

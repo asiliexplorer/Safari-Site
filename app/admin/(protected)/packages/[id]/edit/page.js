@@ -4,12 +4,13 @@ import EditPackageForm from './EditPackageForm';
 
 async function getPackage(id) {
   try {
+    console.log('Fetching package with id:', id);
     const { data: packageData, error } = await supabase
       .from('packages')
       .select('*')
       .eq('id', id)
       .single();
-
+    console.log('Supabase result:', { packageData, error });
     if (error) return null;
     return packageData;
   } catch (error) {
@@ -18,8 +19,9 @@ async function getPackage(id) {
   }
 }
 
-export default async function EditPackagePage({ params }) {
-  const packageData = await getPackage(params.id);
+export default async function EditPackagePage(context) {
+  const { id } = await context.params;
+  const packageData = await getPackage(id);
 
   if (!packageData) {
     notFound();

@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
-import { writeFile, mkdir } from 'fs/promises';
-import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
+import supabase from '@/lib/db';
 
 export async function POST(request) {
   try {
@@ -24,31 +23,33 @@ export async function POST(request) {
     }
 
     const bytes = await file.arrayBuffer();
-    const buffer = Buffer.from(bytes);
-
-    // Create uploads directory if it doesn't exist
-    const uploadsDir = path.join(process.cwd(), 'public/uploads');
-    try {
-      await mkdir(uploadsDir, { recursive: true });
-    } catch (err) {
-      // Directory already exists
-    }
+    const buffer = new Uint8Array(bytes);
 
     // Generate unique filename
-    const fileExtension = path.extname(file.name);
-    const fileName = `${uuidv4()}${fileExtension}`;
-    const filePath = path.join(uploadsDir, fileName);
+    const fileExtension = file.name.split('.').pop();
+    const fileName = `${uuidv4()}.${fileExtension}`;
 
-    // Save file
-    await writeFile(filePath, buffer);
+    // Upload to Supabase Storage (bucket: 'safari')
+    const { data: uploadData, error: uploadError } = await supabase.storage
+      .from('safari')
+      .upload(fileName, buffer, {
+        contentType: file.type,
+        upsert: false
+      });
 
-    // Return the public URL
-    const publicUrl = `/uploads/${fileName}`;
+    if (uploadError) {
+      return NextResponse.json({ error: 'Failed to upload to Supabase Storage', details: uploadError.message }, { status: 500 });
+    }
 
-    return NextResponse.json({ 
-      success: true, 
-      url: publicUrl,
-      message: 'File uploaded successfully' 
+    // Get public URL
+    const { data: publicUrlData } = supabase.storage
+      .from('safari')
+      .getPublicUrl(fileName);
+
+    return NextResponse.json({
+      success: true,
+      url: publicUrlData.publicUrl,
+      message: 'File uploaded successfully'
     });
   } catch (error) {
     console.error('Upload error:', error);

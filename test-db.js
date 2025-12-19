@@ -5,8 +5,8 @@ import { createClient } from '@supabase/supabase-js';
 config({ path: '.env.local' });
 
 const supabase = createClient(
-  process.env.supabase_url,
-  process.env.supabase_service_role_key
+  process.env.SUPABASE_URL,
+  process.env.SUPABASE_SERVICE_ROLE_KEY
 );
 
 async function test() {
