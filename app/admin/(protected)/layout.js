@@ -19,10 +19,20 @@ export default async function AdminLayout({ children }) {
     { name: 'Blogs', href: '/admin/blogs', icon: BookOpen, current: false },
   ];
 
+  // Responsive sidebar state
+  const [sidebarOpen, setSidebarOpen] = React.useState(false);
+
   return (
     <div className="flex min-h-screen bg-gray-50">
+      {/* Mobile Sidebar Overlay */}
+      <div
+        className={`fixed inset-0 z-40 bg-black bg-opacity-40 transition-opacity xl:hidden ${sidebarOpen ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'}`}
+        onClick={() => setSidebarOpen(false)}
+      />
       {/* Sidebar */}
-      <aside className="w-64 bg-gradient-to-b from-gray-900 to-gray-800 shadow-xl">
+      <aside
+        className={`fixed xl:static z-50 top-0 left-0 h-full w-64 bg-gradient-to-b from-gray-900 to-gray-800 shadow-xl transform transition-transform duration-300 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} xl:translate-x-0 xl:flex xl:flex-col`}
+      >
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-gray-700">
           <div className="flex items-center space-x-3">
@@ -34,6 +44,10 @@ export default async function AdminLayout({ children }) {
               <p className="text-xs text-gray-400">Management Panel</p>
             </div>
           </div>
+          {/* Mobile close button */}
+          <button className="xl:hidden text-gray-400 hover:text-white" onClick={() => setSidebarOpen(false)}>
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+          </button>
         </div>
 
         {/* Navigation */}
@@ -41,7 +55,6 @@ export default async function AdminLayout({ children }) {
           {navigation.map((item) => {
             const Icon = item.icon;
             const isActive = false; // You can implement active state logic here
-            
             return (
               <a
                 key={item.name}
@@ -65,7 +78,7 @@ export default async function AdminLayout({ children }) {
         </nav>
 
         {/* User & Logout Section */}
-        <div className="absolute w-70 bottom-0 left-0 right-0 p-4 ">
+        <div className="mt-auto p-4">
           <div className="flex items-center space-x-3 mb-4 px-3">
             <div className="w-8 h-8 bg-gradient-to-r from-gray-600 to-gray-700 rounded-full flex items-center justify-center">
               <span className="text-xs font-medium text-white">A</span>
@@ -85,8 +98,16 @@ export default async function AdminLayout({ children }) {
         </div>
       </aside>
 
+      {/* Mobile sidebar open button */}
+      <button
+        className="xl:hidden fixed top-4 left-4 z-50 bg-gray-900 text-white p-2 rounded-lg shadow-lg"
+        onClick={() => setSidebarOpen(true)}
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" /></svg>
+      </button>
+
       {/* Main Content - No header/footer, just the content */}
-      <main className="flex-1 overflow-auto bg-gray-50">
+      <main className="flex-1 overflow-auto bg-gray-50 xl:ml-64">
         {children}
       </main>
     </div>

@@ -65,21 +65,14 @@ const PackageDetailsPage = () => {
       setLoading(false);
       return;
     }
-
     const fetchData = async () => {
       try {
-        setLoading(true);
-        console.log('Fetching data for slug:', slug);
-        
         const response = await fetch(`/api/packages/${slug}`);
-        
         if (!response.ok) {
           throw new Error(`Failed to fetch package: ${response.status}`);
         }
-        
         const data = await response.json();
         console.log('Fetched data:', data);
-        
         // Merge with default data to ensure all properties exist
         setPackageData({ ...defaultPackageData, ...data });
       } catch (error) {
@@ -90,11 +83,8 @@ const PackageDetailsPage = () => {
         setLoading(false);
       }
     };
-
     fetchData();
   }, [slug]);
-
-  // Safe data access function
   const getData = (path, defaultValue = []) => {
     if (!packageData) return defaultValue;
     
@@ -419,7 +409,7 @@ const PackageDetailsPage = () => {
       </div>
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 pt-32">
         <div className="flex flex-col lg:flex-row gap-10">
           {/* Sidebar */}
           <aside className="lg:w-1/4">

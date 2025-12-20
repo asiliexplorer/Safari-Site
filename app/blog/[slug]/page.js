@@ -95,7 +95,7 @@ export default function BlogDetailPage() {
   const authorBio = typeof post.author === 'object' ? post.author.bio : 'Travel writer and safari expert';
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-green-50/30">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-green-50/30 pt-20">
       {/* Enhanced Hero Section with Blog Image */}
       <div 
         className="relative text-white bg-cover overflow-hidden"

@@ -2,7 +2,7 @@
 
 export default function InfoLanding() {
   return (
-    <>
+    <div className="min-h-screen bg-gray-50 pt-20">
       <h1 className="text-3xl font-bold text-green-800 mb-6">PRACTICAL INFORMATION</h1>
 
       <p className="mb-6 text-gray-700 leading-relaxed">
@@ -24,6 +24,6 @@ export default function InfoLanding() {
           className="w-full h-64 object-cover"
         />
       </div>
-    </>
+    </div>
   );
 }

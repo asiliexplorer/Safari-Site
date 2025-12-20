@@ -62,7 +62,7 @@ export default function BlogPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-green-50/30">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-green-50/30 pt-20">
       {/* Enhanced Hero Section */}
       <div 
         className="relative text-white py-16 md:py-24 overflow-hidden"
