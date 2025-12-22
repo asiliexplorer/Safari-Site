@@ -39,9 +39,7 @@ const Header = () => {
         </nav>
         {/* Contact & Mobile Menu */}
         <div className="flex items-center gap-2">
-          <Link href="/admin/login" className="hidden md:flex items-center justify-center px-3 py-1.5 rounded-md border border-gray-300 text-gray-600 hover:border-[#FF7D5A] hover:text-[#FF7D5A] hover:bg-[#FF7D5A]/10 transition-all duration-300 text-sm font-medium">
-            Admin
-          </Link>
+          
           <a href="tel:+255767140150" className="hidden md:flex items-center justify-center w-8 h-8 rounded-full border border-gray-300 text-gray-600 hover:border-[#FF7D5A] hover:text-[#FF7D5A] hover:bg-[#FF7D5A]/10 transition-all duration-300">
             <FaPhone className="text-base" />
           </a>
