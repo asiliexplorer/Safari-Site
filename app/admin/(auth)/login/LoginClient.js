@@ -19,11 +19,11 @@ export default function LoginClient() {
         )}
         
         <div className="mb-4">
-          <label htmlFor="email" className="block mb-1">Email</label>
+          <label htmlFor="username" className="block mb-1">Username</label>
           <input
-            id="email"
-            name="email"
-            type="email"
+            id="username"
+            name="username"
+            type="text"
             className="w-full p-2 border rounded"
             required
           />

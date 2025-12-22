@@ -1,3 +1,5 @@
+import dotenv from 'dotenv';
+dotenv.config({ path: '.env.local' });
 import supabase from '../lib/db.js';
 import bcrypt from 'bcrypt';
 
@@ -7,8 +9,8 @@ async function seedAdmin() {
     
     const { data, error } = await supabase
       .from('admins')
-      .insert({ email: 'admin@safari.com', password_hash: hashedPassword, name: 'Admin User' })
-      .select('id, email');
+      .insert({ email: 'admin@safari.com', password_hash: hashedPassword, name: 'admin' })
+      .select('id, name');
 
     if (error) throw error;
 
