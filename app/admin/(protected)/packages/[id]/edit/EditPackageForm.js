@@ -341,20 +341,16 @@ export default function EditPackageForm({ packageData }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
     if (!formData.name.trim()) {
       setError('Package name is required');
       return;
     }
-
     if (!formData.price || parseFloat(formData.price) <= 0) {
       setError('Valid package price is required');
       return;
     }
-
     setLoading(true);
     setError('');
-
     try {
       const response = await fetch(`/admin/packages/api/update/${packageData.id}`, {
         method: 'PUT',
@@ -363,13 +359,10 @@ export default function EditPackageForm({ packageData }) {
         },
         body: JSON.stringify(formData),
       });
-
       const data = await response.json();
-
       if (!response.ok) {
         throw new Error(data.error || 'Failed to update package');
       }
-
       setSuccess('Package updated successfully!');
       setTimeout(() => router.push('/admin/packages'), 1500);
     } catch (err) {
@@ -377,6 +370,13 @@ export default function EditPackageForm({ packageData }) {
     } finally {
       setLoading(false);
     }
+  };
+
+  // Publish handler
+  const handlePublish = async (e) => {
+    e.preventDefault();
+    setFormData(prev => ({ ...prev, status: 'published' }));
+    setTimeout(() => handleSubmit(e), 0);
   };
 
   const baseInputClass = "w-full px-3 py-2 border border-gray-300 rounded-lg transition-colors focus:ring-2 focus:ring-[#465b2d] focus:border-transparent";
@@ -1946,6 +1946,24 @@ export default function EditPackageForm({ packageData }) {
                     </>
                   ) : (
                     'Update Package'
+                  )}
+                </button>
+                <button
+                  type="button"
+                  onClick={handlePublish}
+                  disabled={loading}
+                  className="inline-flex items-center px-6 py-2 border border-green-600 text-sm font-medium rounded-lg text-white disabled:opacity-50 transition-colors ml-3"
+                  style={{ backgroundColor: '#22c55e' }}
+                  onMouseOver={(e) => e.target.style.backgroundColor = '#16a34a'}
+                  onMouseOut={(e) => e.target.style.backgroundColor = '#22c55e'}
+                >
+                  {loading ? (
+                    <>
+                      <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
+                      Publishing...
+                    </>
+                  ) : (
+                    'Publish Package'
                   )}
                 </button>
               ) : (
